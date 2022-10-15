@@ -1,4 +1,4 @@
-# Note: Last built with version 2.0.15 of Emscripten
+# Note: Last built with version 3.1.24 of Emscripten
 
 # TODO: Emit a file showing which version of emcc and SQLite was used to compile the emitted output.
 # TODO: Create a release on Github with these compiled assets rather than checking them in
@@ -6,9 +6,9 @@
 
 # I got this handy makefile syntax from : https://github.com/mandel59/sqlite-wasm (MIT License) Credited in LICENSE
 # To use another version of Sqlite, visit https://www.sqlite.org/download.html and copy the appropriate values here:
-SQLITE_AMALGAMATION = sqlite-amalgamation-3390300
-SQLITE_AMALGAMATION_ZIP_URL = https://www.sqlite.org/2022/sqlite-amalgamation-3390300.zip
-SQLITE_AMALGAMATION_ZIP_SHA3 = 6a83b7da4b73d7148364a0033632ae1e4f9d647417e6f3654a5d0afe8424bbb9
+SQLITE_AMALGAMATION = sqlite-amalgamation-3390400
+SQLITE_AMALGAMATION_ZIP_URL = https://www.sqlite.org/2022/sqlite-amalgamation-3390400.zip
+SQLITE_AMALGAMATION_ZIP_SHA3 = 96894cf2c57f76ccbeda41aa6ff0ce1f6b093deced8335801d38ddb34ec9690e
 
 # Note that extension-functions.c hasn't been updated since 2010-02-06, so likely doesn't need to be updated
 EXTENSION_FUNCTIONS = extension-functions.c
@@ -18,11 +18,13 @@ EXTENSION_FUNCTIONS_SHA1 = c68fa706d6d9ff98608044c00212473f9c14892f
 EMCC=emcc
 
 SQLITE_COMPILATION_FLAGS = \
-	-Oz \
+	-O2 \
 	-DSQLITE_OMIT_LOAD_EXTENSION \
 	-DSQLITE_DISABLE_LFS \
 	-DSQLITE_ENABLE_FTS3 \
 	-DSQLITE_ENABLE_FTS3_PARENTHESIS \
+	-DSQLITE_ENABLE_FTS5 \
+	-DSQLITE_ENABLE_JSON1 \
 	-DSQLITE_THREADSAFE=0 \
 	-DSQLITE_ENABLE_NORMALIZE
 
@@ -51,9 +53,8 @@ EMFLAGS_WASM = \
 	-s ALLOW_MEMORY_GROWTH=1
 
 EMFLAGS_OPTIMIZED= \
-	-Oz \
-	-flto \
-	--closure 1
+	-O3 \
+	-flto
 
 EMFLAGS_DEBUG = \
 	-s ASSERTIONS=1 \
